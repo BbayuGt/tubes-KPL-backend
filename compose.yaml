@@ -1,0 +1,7 @@
+﻿services:
+  tubes-kpl-backend:
+    image: tubes-kpl-backend
+    build:
+      context: .
+      dockerfile: tubes-KPL-backend/Dockerfile
+
