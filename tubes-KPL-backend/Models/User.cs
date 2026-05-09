@@ -1,5 +1,9 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
 namespace tubes_KPL_backend.Models;
 
+[PrimaryKey(nameof(Id))]
 public class User
 {
     public int Id { get; set; }
