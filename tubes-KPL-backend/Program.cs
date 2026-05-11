@@ -6,6 +6,13 @@ using tubes_KPL_backend.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Xendit
+builder.Services.Configure<tubes_KPL_backend.Models.XenditSettings>(
+    builder.Configuration.GetSection("Xendit")
+);
+
+builder.Services.AddHttpClient();
+
 // PostgreSQL
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
