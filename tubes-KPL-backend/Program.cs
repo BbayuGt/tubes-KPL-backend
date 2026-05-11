@@ -2,7 +2,9 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using tubes_KPL_backend.Data;
+using tubes_KPL_backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +41,28 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    // Tambah header API Key biar gampang di Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Header untuk autorisasi pada endpoint tertentu\n\n" +
+                      "Tulis 'Bearer' <spasi> token di input teks.\n\n" +
+                      "Contoh: 'Bearer abcd'\n\n",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    
+    c.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", doc)] = []
+    });
+});
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 
