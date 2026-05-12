@@ -1,12 +1,10 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using tubes_KPL_backend.Data;
 using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
+using tubes_KPL_backend.Services;
 
 namespace tubes_KPL_backend.Controllers;
 
@@ -15,76 +13,76 @@ namespace tubes_KPL_backend.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly AppDbContext _context;
-    private readonly IConfiguration _configuration;
+    private readonly AuthService _authService;
+    
 
-    public AuthController(AppDbContext context, IConfiguration configuration)
+    public AuthController(AppDbContext context, AuthService authService)
     {
         _context = context;
-        _configuration = configuration;
+        _authService = authService;
+    }
+
+    [HttpGet("me")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponseDTO))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetMe()
+    {
+        try
+        {
+            User user = await _authService.GetCurrentUser();
+            
+            // Supaya tidak return password, pake DTO
+            UserResponseDTO response = new UserResponseDTO
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email
+            };
+            
+            return Ok(new
+            {
+                User = response
+            });
+        } catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDTO request)
     {
-        if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-            return BadRequest("Email sudah ada");
-
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-
-        var user = new User
+        try
         {
-            Name = request.Name,
-            Email = request.Email,
-            PasswordHash = passwordHash
-        };
-
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-
-        return Ok(new
+            await _authService.RegisterUser(request.Name, request.Email, request.Password);
+            return Ok(new
+            {
+                Message = "User has been registered successfully!"
+            });
+        }
+        catch (Exception e)
         {
-            message = "Berhasil teregistrasi!"
-        });
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDTO request)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-
-        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-            return Unauthorized("Email/Password salah!");
-
-        var token = GenerateJwtToken(user);
-
-        return Ok(new { token });
-    }
-    
-    // @TODO
-    private string GenerateJwtToken(User user)
-    {
-        var jwtSettings = _configuration.GetSection("Jwt");
-        var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings["Key"]!));
-
-        var claims = new[]
+        try
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Name),
-            new Claim(ClaimTypes.Email, user.Email)
-        };
-
-        var tokenDescriptor = new SecurityTokenDescriptor()
+            string jwt = await _authService.Login(request.Email, request.Password);
+            
+            return Ok(new
+            {
+                Message = "Successfully logged in!",
+                Token = jwt
+            });
+        }
+        catch (Exception e)
         {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(1),
-            Issuer = jwtSettings["Issuer"],
-            Audience = jwtSettings["Audience"],
-            SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
-        };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        
-        return tokenHandler.WriteToken(token);
+            return BadRequest(e.Message);
+        }
     }
- }
+}

@@ -9,4 +9,6 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Payment> Payments { get; set; }
+    public DbSet<Campaign> Campaigns { get; set; }
+
 }
