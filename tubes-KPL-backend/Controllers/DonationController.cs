@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
@@ -10,16 +11,26 @@ namespace tubes_KPL_backend.Controllers;
 public class DonationController : ControllerBase
 {
     private readonly DonationService _donationService;
-
-    public DonationController(DonationService donationService)
+    private readonly AuthService _authService;
+    public DonationController(DonationService donationService, AuthService authService)
     {
         _donationService = donationService;
+        _authService = authService;
     }
 
     [HttpGet("{id}")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<ActionResult<Donation>> GetDonationById(int id)
     {
+        User user = await _authService.GetCurrentUser();   
         var donation = await _donationService.GetDonationByIdAsync(id);
+        if (donation == null) { 
+            return NotFound();
+        }
+        if(user.Id != donation.UserId)
+        {
+            return Forbid();
+        }
         if (donation == null)
         {
             return NotFound();
@@ -28,8 +39,14 @@ public class DonationController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<ActionResult<List<Donation>>> GetAllDonations()
     {
+        User user = await _authService.GetCurrentUser();
+        if (user.Role != "Admin")
+        {
+            return Forbid();
+        }
         var donations = await _donationService.GetAllDonationsAsync();
         return Ok(donations);
     }
@@ -56,8 +73,14 @@ public class DonationController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<IActionResult> DeleteDonation(int id)
     {
+        User user = await _authService.GetCurrentUser();
+        if(user.Role != "Admin")
+        {
+            return Forbid();
+        }
         try
         {
             var deleted = await _donationService.DeleteDonationAsync(id);
