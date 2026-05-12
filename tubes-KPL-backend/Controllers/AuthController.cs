@@ -24,6 +24,8 @@ public class AuthController : ControllerBase
 
     [HttpGet("me")]
     [Authorize(AuthenticationSchemes = "Bearer")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponseDTO))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetMe()
     {
         try
