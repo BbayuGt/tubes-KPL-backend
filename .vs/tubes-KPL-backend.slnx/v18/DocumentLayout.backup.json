@@ -1,0 +1,181 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Controllers\\CampaignController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tubes-KPL-backend\\Controllers\\CampaignController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3287B340-7489-DE57-77EA-DF3B0143AF6C}|tubes-KPL-backend\\tubes-KPL-backend.csproj|C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-kpl-backend\\tubes-kpl-backend.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{3287B340-7489-DE57-77EA-DF3B0143AF6C}|tubes-KPL-backend\\tubes-KPL-backend.csproj|solutionrelative:tubes-kpl-backend\\tubes-kpl-backend.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tubes-KPL-backend\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Services\\CampaignService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tubes-KPL-backend\\Services\\CampaignService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Models\\Campaign.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tubes-KPL-backend\\Models\\Campaign.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Data\\AppDbContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tubes-KPL-backend\\Data\\AppDbContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Controllers\\AuthController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tubes-KPL-backend\\Controllers\\AuthController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Models\\User.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tubes-KPL-backend\\Models\\User.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\DTOs\\RegisterDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tubes-KPL-backend\\DTOs\\RegisterDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\DTOs\\LoginDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tubes-KPL-backend\\DTOs\\LoginDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Program.cs",
+              "RelativeDocumentMoniker": "tubes-KPL-backend\\Program.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Program.cs",
+              "RelativeToolTip": "tubes-KPL-backend\\Program.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAAC0AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T13:03:20.867Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CampaignController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Controllers\\CampaignController.cs",
+              "RelativeDocumentMoniker": "tubes-KPL-backend\\Controllers\\CampaignController.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Controllers\\CampaignController.cs",
+              "RelativeToolTip": "tubes-KPL-backend\\Controllers\\CampaignController.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAYwCgAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T12:48:42.114Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CampaignService.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Services\\CampaignService.cs",
+              "RelativeDocumentMoniker": "tubes-KPL-backend\\Services\\CampaignService.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Services\\CampaignService.cs",
+              "RelativeToolTip": "tubes-KPL-backend\\Services\\CampaignService.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAA7wDwAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T12:23:24.502Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "tubes-KPL-backend",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\tubes-KPL-backend.csproj",
+              "RelativeDocumentMoniker": "tubes-KPL-backend\\tubes-KPL-backend.csproj",
+              "ToolTip": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\tubes-KPL-backend.csproj",
+              "RelativeToolTip": "tubes-KPL-backend\\tubes-KPL-backend.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-05-09T12:22:49.513Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Campaign.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Models\\Campaign.cs",
+              "RelativeDocumentMoniker": "tubes-KPL-backend\\Models\\Campaign.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Models\\Campaign.cs",
+              "RelativeToolTip": "tubes-KPL-backend\\Models\\Campaign.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T12:03:39.305Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "tubes-KPL-backend\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "tubes-KPL-backend\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T12:01:37.443Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "tubes-KPL-backend\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "tubes-KPL-backend\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T12:01:27.822Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Models\\User.cs",
+              "RelativeDocumentMoniker": "tubes-KPL-backend\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\Models\\User.cs",
+              "RelativeToolTip": "tubes-KPL-backend\\Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T12:03:01.743Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "RegisterDTO.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\DTOs\\RegisterDTO.cs",
+              "RelativeDocumentMoniker": "tubes-KPL-backend\\DTOs\\RegisterDTO.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\DTOs\\RegisterDTO.cs",
+              "RelativeToolTip": "tubes-KPL-backend\\DTOs\\RegisterDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T12:01:11.679Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "LoginDTO.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\DTOs\\LoginDTO.cs",
+              "RelativeDocumentMoniker": "tubes-KPL-backend\\DTOs\\LoginDTO.cs",
+              "ToolTip": "C:\\Users\\user\\Documents\\Kumpulan Tugas Semester 4\\tubes-KPL-backend-main\\tubes-KPL-backend-main\\tubes-KPL-backend\\DTOs\\LoginDTO.cs",
+              "RelativeToolTip": "tubes-KPL-backend\\DTOs\\LoginDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T12:01:09.642Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
