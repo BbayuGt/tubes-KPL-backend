@@ -72,8 +72,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AuthService>();
-
-
+builder.Services.AddScoped<DonationService>();
 builder.Services.AddScoped<CampaignService>();
 var app = builder.Build();
 
