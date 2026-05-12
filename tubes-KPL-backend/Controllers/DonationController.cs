@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using tubes_KPL_backend.DTOs.Donation;
+using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
 

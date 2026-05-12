@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using tubes_KPL_backend.Data;
-using tubes_KPL_backend.DTOs.Donation;
+using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 
 namespace tubes_KPL_backend.Services
