@@ -6,6 +6,8 @@ using Microsoft.OpenApi;
 using tubes_KPL_backend.Data;
 using tubes_KPL_backend.Services;
 
+using tubes_KPL_backend.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // PostgreSQL
@@ -64,6 +66,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AuthService>();
 
+
+builder.Services.AddScoped<CampaignService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
