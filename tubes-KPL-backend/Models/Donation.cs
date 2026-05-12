@@ -6,10 +6,6 @@ namespace tubes_KPL_backend.Models
     [PrimaryKey(nameof(Id))] 
     public class Donation
     {
-
-        [PrimaryKey(nameof(Id))]
-        public class Donation
-        {
             public int Id { get; set; }
 
             // User (donatur) yang melakukan donasi.
