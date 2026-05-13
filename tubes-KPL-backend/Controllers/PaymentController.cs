@@ -95,7 +95,7 @@ namespace tubes_KPL_backend.Controllers
                 Amount = request.Amount,
                 PayerEmail = request.PayerEmail,
                 Description = request.Description,
-                Status = "PENDING",
+                Status = PaymentStatus.PENDING,
                 InvoiceUrl = invoiceUrl,
                 CreatedAt = DateTime.UtcNow,
                 ExpiryDate = expiryDate
