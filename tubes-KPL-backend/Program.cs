@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using tubes_KPL_backend.Data;
+using tubes_KPL_backend.Repositories;
 using tubes_KPL_backend.Services;
 
 using tubes_KPL_backend.Services;
@@ -74,6 +75,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<DonationService>();
 builder.Services.AddScoped<CampaignService>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); // repository
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
