@@ -12,13 +12,11 @@ namespace tubes_KPL_backend.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly AppDbContext _context;
     private readonly AuthService _authService;
     
 
-    public AuthController(AppDbContext context, AuthService authService)
+    public AuthController(AuthService authService)
     {
-        _context = context;
         _authService = authService;
     }
 

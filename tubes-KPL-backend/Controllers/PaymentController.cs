@@ -7,6 +7,7 @@ using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Data;
 using tubes_KPL_backend.DTOs;
 using Microsoft.EntityFrameworkCore;
+using tubes_KPL_backend.Repositories;
 
 namespace tubes_KPL_backend.Controllers
 {
@@ -17,19 +18,18 @@ namespace tubes_KPL_backend.Controllers
         private readonly XenditSettings _xendit;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<PaymentController> _logger;
-        private readonly AppDbContext _db;
+        private readonly IGenericRepository<Payment> _repository;
 
         public PaymentController(
             IOptions<XenditSettings> xendit,
             IHttpClientFactory httpClientFactory,
             ILogger<PaymentController> logger,
-            AppDbContext db
-        )
+            IGenericRepository<Payment>  repository)
         {
             _xendit = xendit.Value;
             _httpClientFactory = httpClientFactory;
             _logger = logger;
-            _db = db;
+            _repository = repository;
         }
 
         [HttpPost("create-invoice")]
@@ -100,8 +100,8 @@ namespace tubes_KPL_backend.Controllers
                 CreatedAt = DateTime.UtcNow,
                 ExpiryDate = expiryDate
             };
-            await _db.Payments.AddAsync(payment);
-            await _db.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
+            await _repository.AddAsync(payment);
 
             return Content(result, "application/json");
         }
@@ -109,8 +109,8 @@ namespace tubes_KPL_backend.Controllers
         [HttpGet("status/{externalId}")]
         public async Task<IActionResult> GetStatus(string externalId)
         {
-            var payment = await _db.Payments
-                .FirstOrDefaultAsync(p => p.ExternalId == externalId);
+            var payment = await _repository
+                .GetByExpression(p => p.ExternalId == externalId);
 
             if (payment == null)
             {

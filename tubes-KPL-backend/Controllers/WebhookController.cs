@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Text.Json;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Data;
+using tubes_KPL_backend.Repositories;
 
 namespace tubes_KPL_backend.Controllers
 {
@@ -12,13 +13,13 @@ namespace tubes_KPL_backend.Controllers
     public class WebhookController : ControllerBase
     {
         private readonly XenditSettings _xendit;
-        private readonly AppDbContext _db;
+        private readonly IGenericRepository<Payment> _repository;
 
         // Tambahkan AppDbContext di sini
-        public WebhookController(IOptions<XenditSettings> xendit, AppDbContext db)
+        public WebhookController(IOptions<XenditSettings> xendit, IGenericRepository<Payment> repository)
         {
             _xendit = xendit.Value;
-            _db = db;
+            _repository = repository;
         }
 
         [HttpPost("xendit")]
@@ -39,7 +40,7 @@ namespace tubes_KPL_backend.Controllers
             Console.WriteLine($"Webhook masuk: {externalId} - {status}");
 
             // Cari data di database berdasarkan ExternalId
-            var payment = await _db.Payments.FirstOrDefaultAsync(p => p.ExternalId == externalId);
+            var payment = await _repository.GetByExpression(p => p.ExternalId == externalId);
 
             if (payment != null)
             {
@@ -67,9 +68,9 @@ namespace tubes_KPL_backend.Controllers
                 {
                     payment.Status = PaymentStatus.FAILED;
                 }
-
+                
                 // Save perubahan ke database
-                await _db.SaveChangesAsync();
+                await _repository.SaveChangesAsync();
             }
             else
             {
