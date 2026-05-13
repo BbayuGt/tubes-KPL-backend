@@ -1,8 +1,9 @@
-﻿namespace tubes_KPL_backend.Controllers
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace tubes_KPL_backend.Controllers
 {
     using tubes_KPL_backend.Models;
     using Microsoft.AspNetCore.Mvc;
-    using tubes_KPL_backend.Models;
     using tubes_KPL_backend.Services;
 
 
@@ -11,6 +12,7 @@
     public class CampaignController : ControllerBase
     {
         private readonly CampaignService _campaignService;
+        private readonly AuthService _authService;
 
         public CampaignController(CampaignService campaignService)
         {
@@ -39,8 +41,15 @@
 
         // POST: api/campaign
         [HttpPost]
-        public async Task<Campaign> Create(Campaign campaign)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<Campaign>> Create(Campaign campaign)
         {
+            User user = await _authService.GetCurrentUser();
+            if (user.Role != "User")
+            {
+                return Forbid();
+            }
+
             var newCampaign = await _campaignService.CreateCampaign(campaign);
 
             if (newCampaign == null)
@@ -52,8 +61,14 @@
 
         // PUT: api/campaign/1
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Update(int id, Campaign campaign)
         {
+            User user = await _authService.GetCurrentUser();
+            if (user.Role != "Admin")
+            {
+                return Forbid();
+            }
             var result = await _campaignService.UpdateCampaign(id, campaign);
 
             if (!result)
@@ -64,8 +79,14 @@
 
         // DELETE: api/campaign/1
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Delete(int id)
         {
+            User user = await _authService.GetCurrentUser();
+            if (user.Role != "Admin")
+            {
+                return Forbid();
+            }
             var result = await _campaignService.DeleteCampaign(id);
 
             if (!result)
