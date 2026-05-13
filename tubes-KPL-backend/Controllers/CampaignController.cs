@@ -41,7 +41,7 @@ namespace tubes_KPL_backend.Controllers
 
         // POST: api/campaign
         [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         public async Task<ActionResult<Campaign>> Create(Campaign campaign)
         {
 
@@ -56,7 +56,7 @@ namespace tubes_KPL_backend.Controllers
 
         // PUT: api/campaign/1
         [HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         public async Task<IActionResult> Update(int id, Campaign campaign)
         {
            
@@ -70,7 +70,7 @@ namespace tubes_KPL_backend.Controllers
 
         // DELETE: api/campaign/1
         [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
            
