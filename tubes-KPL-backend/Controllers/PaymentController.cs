@@ -40,6 +40,11 @@ namespace tubes_KPL_backend.Controllers
                 return BadRequest(new { message = "Amount must be greater than 0." });
             }
 
+            if (await _repository.ExistsAsync(c => c.ExternalId == request.ExternalId))
+            {
+                return BadRequest("Duplikat external");
+            }
+
             var client = _httpClientFactory.CreateClient();
 
             var authToken = Convert.ToBase64String(
@@ -100,8 +105,8 @@ namespace tubes_KPL_backend.Controllers
                 CreatedAt = DateTime.UtcNow,
                 ExpiryDate = expiryDate
             };
-            await _repository.SaveChangesAsync();
             await _repository.AddAsync(payment);
+            await _repository.SaveChangesAsync();
 
             return Content(result, "application/json");
         }
