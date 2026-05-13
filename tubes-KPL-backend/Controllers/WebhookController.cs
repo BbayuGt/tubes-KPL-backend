@@ -58,32 +58,15 @@ namespace tubes_KPL_backend.Controllers
                 // Table-Driven Processing
                 if (_statusHandlers.TryGetValue(status, out var handler))
                 {
-                    payment.Status = PaymentStatus.SUCCEEDED;
-                    // Pakai TryGetProperty untuk paid_at karena kadang formatnya bisa beda
-                    if (payload.TryGetProperty("paid_at", out var paidAtProp))
+                    if (status == null)
                     {
-                        payment.PaidAt = paidAtProp.GetDateTimeOffset().UtcDateTime;
+                        return StatusCode(403, "Invalid status");
                     }
-                    else
-                    {
-                        payment.PaidAt = DateTime.UtcNow;
-                    }
-                    
-                    Console.WriteLine($"Database updated: Pembayaran sukses untuk {externalId}");
+                    await _statusHandlers[status](payment, payload);
                 }
-                else if (status == PaymentStatus.EXPIRED)
-                {
-                    payment.Status = PaymentStatus.EXPIRED;
-                    Console.WriteLine($"Database updated: Invoice expired untuk {externalId}");
-                }
-                else if (status == PaymentStatus.FAILED)
-                {
-                    payment.Status = PaymentStatus.FAILED;
-                }
-                
+
                 // Save perubahan ke database
                 await _repository.SaveChangesAsync();
-
             }
             else
             {
@@ -113,7 +96,7 @@ namespace tubes_KPL_backend.Controllers
             }
 
             Console.WriteLine($"Database updated: Pembayaran sukses untuk {payment.ExternalId}");
-
+            _repository.Update(payment);
             await Task.CompletedTask;
         }
 
@@ -123,7 +106,7 @@ namespace tubes_KPL_backend.Controllers
             payment.Status = PaymentStatus.EXPIRED;
 
             Console.WriteLine($"Database updated: Invoice expired untuk {payment.ExternalId}");
-
+            _repository.Update(payment);
             await Task.CompletedTask;
         }
 
@@ -133,7 +116,7 @@ namespace tubes_KPL_backend.Controllers
             payment.Status = PaymentStatus.FAILED;
 
             Console.WriteLine($"Database updated: Pembayaran gagal untuk {payment.ExternalId}");
-
+            _repository.Update(payment);
             await Task.CompletedTask;
         }
     }
