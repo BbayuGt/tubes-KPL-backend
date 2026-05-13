@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using System.Transactions;
 using Microsoft.EntityFrameworkCore;
 using tubes_KPL_backend.Data;
 
@@ -24,6 +26,16 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _dbSet.FindAsync(id);
     }
 
+    public async Task<T?> GetByExpression(Expression<Func<T,bool>> query)
+    {
+        return await _dbSet.FirstOrDefaultAsync(query);
+    }
+
+    public Task<bool> ExistsAsync(Expression<Func<T, bool>> query)
+    {
+        return _dbSet.AnyAsync(query);
+    }
+
     public async Task AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
@@ -37,5 +49,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public void Delete(T entity)
     {
         _dbSet.Remove(entity);
+    }
+    
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }
