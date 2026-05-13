@@ -31,8 +31,10 @@ Bagian ini memproses aturan bisnis dan logika utama dari aplikasi.
 *   [AuthService](docs/Services/AuthService.md) - Menangani logika validasi akun pengguna.
 *   [CampaignService](docs/Services/CampaignService.md) - Menangani logika pengambilan dan penambahan kampanye donasi.
 *   [DonationService](docs/Services/DonationService.md) - Menangani aturan perhitungan dan pencatatan transaksi donasi.
+*   [WebhookService](docs/Services/WebhookService.md) - Menangani logika pemrosesan dan kejadian (event) dari webhook yang masuk.
 
 ### Basis Data & Struktur
 Bagian ini mengatur bagaimana data disimpan dan dihubungkan.
 *   [AppDbContext](docs/Data/AppDbContext.md) - Mengatur komunikasi antara kode aplikasi dengan mesin basis data PostgreSQL.
+*   [GenericRepository](docs/Repositories/GenericRepository.md) - Lapisan abstraksi untuk memisahkan logika akses data standar (CRUD) dari layanan bisnis.
 *   [Models (Model Data)](docs/Models/Models.md) - Penjelasan struktur tabel yang digunakan (seperti data pengguna, donasi, dan pembayaran).
