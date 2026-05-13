@@ -46,7 +46,7 @@ public class AuthService
         return user;
     }
 
-    public async Task<String> Login(string email, string password)
+    public async Task<ActionResult<string>> Login(string email, string password)
     {
         var user = await _repository.GetByExpression(u => u.Email == email);
 

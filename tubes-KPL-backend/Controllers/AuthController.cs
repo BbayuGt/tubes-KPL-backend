@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using tubes_KPL_backend.Data;
 using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
@@ -70,7 +68,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            string jwt = await _authService.Login(request.Email, request.Password);
+            ActionResult<string> jwt = await _authService.Login(request.Email, request.Password);
             
             return Ok(new
             {

@@ -7,8 +7,6 @@ using tubes_KPL_backend.Data;
 using tubes_KPL_backend.Repositories;
 using tubes_KPL_backend.Services;
 
-using tubes_KPL_backend.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 //Xendit
