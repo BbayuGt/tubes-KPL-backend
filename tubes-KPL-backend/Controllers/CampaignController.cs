@@ -41,14 +41,9 @@ namespace tubes_KPL_backend.Controllers
 
         // POST: api/campaign
         [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "user")]
         public async Task<ActionResult<Campaign>> Create(Campaign campaign)
         {
-            User user = await _authService.GetCurrentUser();
-            if (user.Role != "User")
-            {
-                return Forbid();
-            }
 
             var newCampaign = await _campaignService.CreateCampaign(campaign);
 
@@ -61,14 +56,10 @@ namespace tubes_KPL_backend.Controllers
 
         // PUT: api/campaign/1
         [HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "user")]
         public async Task<IActionResult> Update(int id, Campaign campaign)
         {
-            User user = await _authService.GetCurrentUser();
-            if (user.Role != "Admin")
-            {
-                return Forbid();
-            }
+           
             var result = await _campaignService.UpdateCampaign(id, campaign);
 
             if (!result)
@@ -79,14 +70,10 @@ namespace tubes_KPL_backend.Controllers
 
         // DELETE: api/campaign/1
         [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "user")]
         public async Task<IActionResult> Delete(int id)
         {
-            User user = await _authService.GetCurrentUser();
-            if (user.Role != "Admin")
-            {
-                return Forbid();
-            }
+           
             var result = await _campaignService.DeleteCampaign(id);
 
             if (!result)
