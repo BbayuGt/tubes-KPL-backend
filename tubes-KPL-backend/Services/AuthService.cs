@@ -9,25 +9,26 @@ using Microsoft.IdentityModel.Tokens;
 using tubes_KPL_backend.Data;
 using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
+using tubes_KPL_backend.Repositories;
 
 namespace tubes_KPL_backend.Services;
 
 public class AuthService
 {
-    private readonly AppDbContext _context;
+    private readonly IGenericRepository<User> _repository;
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuthService(AppDbContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+    public AuthService(IGenericRepository<User> repository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
-        _context = context;
+        _repository = repository;
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<User> RegisterUser(string name, string email, string password)
     {
-        if (await _context.Users.AnyAsync(u => u.Email == email))
+        if (await _repository.ExistsAsync(u => u.Email == email))
             throw new BadHttpRequestException("Email already exists");
 
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
@@ -39,15 +40,15 @@ public class AuthService
             PasswordHash = passwordHash
         };
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        await _repository.AddAsync(user);
+        await _repository.SaveChangesAsync();
 
         return user;
     }
 
     public async Task<String> Login(string email, string password)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        var user = await _repository.GetByExpression(u => u.Email == email);
 
         if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             throw new BadHttpRequestException("Email/Password salah!");
@@ -80,7 +81,7 @@ public class AuthService
             return null;
         }
 
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        var user = await _repository.GetByExpression(u => u.Id == userId);
         
         return user;
     }

@@ -2,24 +2,29 @@
 using tubes_KPL_backend.Data;
 using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
+using tubes_KPL_backend.Repositories;
 
 namespace tubes_KPL_backend.Services
 {
     public class DonationService
     {
-        private readonly AppDbContext _context;
-        public DonationService(AppDbContext context)
+        private readonly IGenericRepository<User> _UserRepository;
+        private readonly IGenericRepository<Donation> _DonationRepository;
+        private readonly IGenericRepository<Campaign>  _CampaignRepository;
+        public DonationService(IGenericRepository<User> urepository, IGenericRepository<Donation> donationRepository,  IGenericRepository<Campaign> campaignRepository)
         {
-            _context = context;
+            _UserRepository = urepository;
+            _DonationRepository = donationRepository;
+            _CampaignRepository = campaignRepository;
         }
         public async Task<Donation?> GetDonationByIdAsync(int id)
         {
-            var donations = await _context.Donations.FirstOrDefaultAsync(u => u.Id == id);
+            var donations = await _DonationRepository.GetByExpression(u => u.Id == id);
             return donations;
         }
-        public async Task<List<Donation>> GetAllDonationsAsync()
+        public async Task<IEnumerable<Donation>> GetAllDonationsAsync()
         {
-            var donations = await _context.Donations.ToListAsync();
+            var donations = await _DonationRepository.GetAllAsync();
             return donations;
         }
 
@@ -32,90 +37,70 @@ namespace tubes_KPL_backend.Services
             }
 
             // Pastikan user (donatur) valid.
-            var userExists = await _context.Users.AnyAsync(u => u.Id == request.UserId);
+            var userExists = await _UserRepository.ExistsAsync(u => u.Id == request.UserId);
             if (!userExists)
             {
                 throw new KeyNotFoundException("User tidak ditemukan.");
             }
 
             // Ambil campaign tujuan yang akan ditambahkan total dananya.
-            var campaign = await _context.Campaigns.FirstOrDefaultAsync(c => c.Id == request.CampaignId);
+            var campaign = await _CampaignRepository.GetByExpression(c => c.Id == request.CampaignId);
             if (campaign == null)
             {
                 throw new KeyNotFoundException("Campaign tidak ditemukan.");
             }
 
             // Atomic transaction: catat donasi + update total campaign harus sukses bersama.
-            await using var transaction = await _context.Database.BeginTransactionAsync();
-            try
+            var donation = new Donation
             {
-                var donation = new Donation
-                {
-                    UserId = request.UserId,
-                    CampaignId = request.CampaignId,
-                    Amount = request.Amount,
-                    CreatedDate = DateTime.UtcNow
-                };
+                UserId = request.UserId,
+                CampaignId = request.CampaignId,
+                Amount = request.Amount,
+                CreatedDate = DateTime.UtcNow
+            };
 
-                _context.Donations.Add(donation);
+            _DonationRepository.AddAsync(donation);
 
-                // Update akumulasi dana campaign secara sistematis setelah donasi valid.
-                campaign.CollectedAmount += request.Amount;
+            // Update akumulasi dana campaign secara sistematis setelah donasi valid.
+            campaign.CollectedAmount += request.Amount;
 
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
+            await _DonationRepository.SaveChangesAsync();
 
-                return new CreateDonationResponseDTO
-                {
-                    DonationId = donation.Id,
-                    CampaignId = campaign.Id,
-                    DonationAmount = donation.Amount,
-                    UpdatedCampaignTotal = campaign.CollectedAmount,
-                    CreatedDate = donation.CreatedDate
-                };
-            }
-            catch
+            return new CreateDonationResponseDTO
             {
-                await transaction.RollbackAsync();
-                throw;
-            }
+                DonationId = donation.Id,
+                CampaignId = campaign.Id,
+                DonationAmount = donation.Amount,
+                UpdatedCampaignTotal = campaign.CollectedAmount,
+                CreatedDate = donation.CreatedDate
+            };
         }
 
         public async Task<bool> DeleteDonationAsync(int id)
         {
-            var donation = await _context.Donations.FirstOrDefaultAsync(d => d.Id == id);
+            var donation = await _DonationRepository.GetByExpression(d => d.Id == id);
             if (donation == null)
             {
                 return false;
             }
 
-            var campaign = await _context.Campaigns.FirstOrDefaultAsync(c => c.Id == donation.CampaignId);
+            var campaign = await _CampaignRepository.GetByExpression(c => c.Id == donation.CampaignId);
             if (campaign == null)
             {
                 throw new KeyNotFoundException("Campaign tidak ditemukan untuk donasi ini.");
             }
 
             // Atomic transaction: hapus donasi + koreksi total campaign harus sinkron.
-            await using var transaction = await _context.Database.BeginTransactionAsync();
-            try
+            _DonationRepository.Delete(donation);
+            campaign.CollectedAmount -= donation.Amount;
+            if (campaign.CollectedAmount < 0)
             {
-                _context.Donations.Remove(donation);
-                campaign.CollectedAmount -= donation.Amount;
-                if (campaign.CollectedAmount < 0)
-                {
-                    campaign.CollectedAmount = 0;
-                }
-
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-
-                return true;
+                campaign.CollectedAmount = 0;
             }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+
+            await _DonationRepository.SaveChangesAsync();
+
+            return true;
         }
     }
 }

@@ -1,48 +1,49 @@
 ﻿using tubes_KPL_backend.Data;
 using tubes_KPL_backend.Models;
 using Microsoft.EntityFrameworkCore;
+using tubes_KPL_backend.Repositories;
 
 namespace tubes_KPL_backend.Services
 {
     public class CampaignService
     {
-        private readonly AppDbContext _context;
+        private readonly IGenericRepository<Campaign> _repository;
 
-        public CampaignService(AppDbContext context)
+        public CampaignService(IGenericRepository<Campaign> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET ALL
-        public async Task<List<Campaign>> GetAllCampaigns()
+        public async Task<IEnumerable<Campaign>> GetAllCampaigns()
         {
-            return await _context.Campaigns.ToListAsync();
+            return await _repository.GetAllAsync();
         }
 
         // GET BY ID
         public async Task<Campaign?> GetCampaignById(int id)
         {
-            return await _context.Campaigns.FindAsync(id);
+            return await _repository.GetByIdAsync(id);
         }
 
         // CREATE
         public async Task<Campaign> CreateCampaign(Campaign campaign)
         {
             // cek duplicate id
-            var existingCampaign = await _context.Campaigns.FindAsync(campaign.Id);
+            var existingCampaign = await _repository.GetByIdAsync(campaign.Id);
             if (existingCampaign != null)
             {
                 return null;
             }
-            _context.Campaigns.Add(campaign);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(campaign);
+            await _repository.SaveChangesAsync();
             return campaign;
         }
 
         // UPDATE
         public async Task<bool> UpdateCampaign(int id, Campaign updatedCampaign)
         {
-            var campaign = await _context.Campaigns.FindAsync(id);
+            var campaign = await _repository.GetByIdAsync(id);
 
             if (campaign == null)
                 return false;
@@ -53,21 +54,21 @@ namespace tubes_KPL_backend.Services
             campaign.ImageUrl = updatedCampaign.ImageUrl;
             campaign.IsActive = updatedCampaign.IsActive;
 
-            await _context.SaveChangesAsync();
+            _repository.Update(campaign);
+            await _repository.SaveChangesAsync();
             return true;
         }
 
         // DELETE
         public async Task<bool> DeleteCampaign(int id)
         {
-            var campaign = await _context.Campaigns.FindAsync(id);
+            var campaign = await _repository.GetByIdAsync(id);
 
             if (campaign == null)
                 return false;
 
-            _context.Campaigns.Remove(campaign);
-            await _context.SaveChangesAsync();
-
+            _repository.Delete(campaign);
+            await _repository.SaveChangesAsync();
             return true;
         }
     }
