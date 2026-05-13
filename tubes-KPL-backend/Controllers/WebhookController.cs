@@ -43,9 +43,9 @@ namespace tubes_KPL_backend.Controllers
 
             if (payment != null)
             {
-                if (status == "PAID")
+                if (status == PaymentStatus.SUCCEEDED)
                 {
-                    payment.Status = "PAID";
+                    payment.Status = PaymentStatus.SUCCEEDED;
                     // Pakai TryGetProperty untuk paid_at karena kadang formatnya bisa beda
                     if (payload.TryGetProperty("paid_at", out var paidAtProp))
                     {
@@ -58,10 +58,14 @@ namespace tubes_KPL_backend.Controllers
                     
                     Console.WriteLine($"Database updated: Pembayaran sukses untuk {externalId}");
                 }
-                else if (status == "EXPIRED")
+                else if (status == PaymentStatus.EXPIRED)
                 {
-                    payment.Status = "EXPIRED";
+                    payment.Status = PaymentStatus.EXPIRED;
                     Console.WriteLine($"Database updated: Invoice expired untuk {externalId}");
+                }
+                else if (status == PaymentStatus.FAILED)
+                {
+                    payment.Status = PaymentStatus.FAILED;
                 }
 
                 // Save perubahan ke database
