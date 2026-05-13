@@ -7,6 +7,7 @@ using tubes_KPL_backend.Controllers;
 using tubes_KPL_backend.Data;
 using tubes_KPL_backend.Models;
 using Xunit;
+using tubes_KPL_backend.Repositories;
 
 namespace UnitTesting_KPL.Controllers
 {
@@ -39,7 +40,7 @@ namespace UnitTesting_KPL.Controllers
             // Membuat controller
             var controller = new WebhookController(
                 xenditSettings,
-                dbContext
+                new GenericRepository<Payment>(dbContext)
             );
 
             // Membuat HttpContext palsu
@@ -103,7 +104,7 @@ namespace UnitTesting_KPL.Controllers
             // Membuat controller
             var controller = new WebhookController(
                 xenditSettings,
-                dbContext
+                new GenericRepository<Payment>(dbContext)
             );
 
             // Membuat HttpContext palsu
@@ -118,7 +119,7 @@ namespace UnitTesting_KPL.Controllers
             // Payload webhook status PAID
             var payload = JsonDocument.Parse(@"
             {
-                ""status"": ""PAID"",
+                ""status"": ""SUCCEEDED"",
                 ""external_id"": ""payment-001"",
                 ""paid_at"": ""2025-01-01T10:00:00Z""
             }").RootElement;
@@ -139,8 +140,8 @@ namespace UnitTesting_KPL.Controllers
             // Memastikan payment tidak null
             Assert.NotNull(payment);
 
-            // Memastikan status berubah menjadi PAID
-            Assert.Equal("PAID", payment!.Status);
+            // Memastikan status berubah menjadi SUCCEEDED
+            Assert.Equal("SUCCEEDED", payment!.Status);
 
             // Memastikan PaidAt terisi
             Assert.NotNull(payment.PaidAt);
@@ -178,7 +179,7 @@ namespace UnitTesting_KPL.Controllers
             // Membuat controller
             var controller = new WebhookController(
                 xenditSettings,
-                dbContext
+                new GenericRepository<Payment>(dbContext)
             );
 
             // Membuat HttpContext palsu

@@ -5,6 +5,7 @@ using tubes_KPL_backend.Data;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
 using Xunit;
+using tubes_KPL_backend.Repositories;
 
 namespace UnitTesting_KPL.Controllers
 {
@@ -47,7 +48,7 @@ namespace UnitTesting_KPL.Controllers
 
             await dbContext.SaveChangesAsync();
 
-            var service = new CampaignService(dbContext);
+            var service = new CampaignService(new GenericRepository<Campaign>(dbContext));
 
             var controller = new CampaignController(service);
 
@@ -81,7 +82,7 @@ namespace UnitTesting_KPL.Controllers
 
             await dbContext.SaveChangesAsync();
 
-            var service = new CampaignService(dbContext);
+            var service = new CampaignService(new GenericRepository<Campaign>(dbContext));
 
             var controller = new CampaignController(service);
 
@@ -103,7 +104,7 @@ namespace UnitTesting_KPL.Controllers
             // Arrange
             var dbContext = GetDbContext();
 
-            var service = new CampaignService(dbContext);
+            var service = new CampaignService(new GenericRepository<Campaign>(dbContext));
 
             var controller = new CampaignController(service);
 
@@ -122,7 +123,7 @@ namespace UnitTesting_KPL.Controllers
             // Arrange
             var dbContext = GetDbContext();
 
-            var service = new CampaignService(dbContext);
+            var service = new CampaignService(new GenericRepository<Campaign>(dbContext));
 
             var controller = new CampaignController(service);
 
@@ -144,7 +145,7 @@ namespace UnitTesting_KPL.Controllers
             Assert.NotNull(result);
 
             // Memastikan title sesuai
-            Assert.Equal("Campaign Baru", result.Title);
+            Assert.Equal("Campaign Baru", result.Value.Title);
         }
 
         [Fact]
@@ -165,7 +166,7 @@ namespace UnitTesting_KPL.Controllers
 
             await dbContext.SaveChangesAsync();
 
-            var service = new CampaignService(dbContext);
+            var service = new CampaignService(new GenericRepository<Campaign>(dbContext));
 
             var controller = new CampaignController(service);
 
@@ -204,7 +205,7 @@ namespace UnitTesting_KPL.Controllers
 
             await dbContext.SaveChangesAsync();
 
-            var service = new CampaignService(dbContext);
+            var service = new CampaignService(new GenericRepository<Campaign>(dbContext));
 
             var controller = new CampaignController(service);
 

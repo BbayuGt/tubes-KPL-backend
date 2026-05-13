@@ -6,6 +6,7 @@ using tubes_KPL_backend.Data;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
 using Xunit;
+using tubes_KPL_backend.Repositories;
 
 namespace UnitTesting_KPL.Services
 {
@@ -48,7 +49,7 @@ namespace UnitTesting_KPL.Services
             var httpContextAccessor = new Mock<IHttpContextAccessor>();
 
             var service = new AuthService(
-                dbContext,
+                new GenericRepository<User>(dbContext),
                 configuration,
                 httpContextAccessor.Object
             );
@@ -94,7 +95,7 @@ namespace UnitTesting_KPL.Services
             var httpContextAccessor = new Mock<IHttpContextAccessor>();
 
             var service = new AuthService(
-                dbContext,
+                new GenericRepository<User>(dbContext),
                 configuration,
                 httpContextAccessor.Object
             );
@@ -134,7 +135,7 @@ namespace UnitTesting_KPL.Services
             var httpContextAccessor = new Mock<IHttpContextAccessor>();
 
             var service = new AuthService(
-                dbContext,
+                new GenericRepository<User>(dbContext),
                 configuration,
                 httpContextAccessor.Object
             );

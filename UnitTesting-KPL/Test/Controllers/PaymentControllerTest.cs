@@ -8,6 +8,7 @@ using tubes_KPL_backend.Data;
 using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 using Xunit;
+using tubes_KPL_backend.Repositories;
 
 namespace UnitTesting_KPL.Controllers
 {
@@ -63,7 +64,7 @@ namespace UnitTesting_KPL.Controllers
                 xenditSettings,
                 httpClientFactoryMock.Object,
                 loggerMock.Object,
-                dbContext
+                new GenericRepository<Payment>(dbContext)
             );
 
             // Act
@@ -109,7 +110,7 @@ namespace UnitTesting_KPL.Controllers
                 xenditSettings,
                 httpClientFactoryMock.Object,
                 loggerMock.Object,
-                dbContext
+                new GenericRepository<Payment>(dbContext)
             );
 
             // Act
@@ -143,7 +144,7 @@ namespace UnitTesting_KPL.Controllers
                 xenditSettings,
                 httpClientFactoryMock.Object,
                 loggerMock.Object,
-                dbContext
+                new GenericRepository<Payment>(dbContext)
             );
 
             // Request dengan amount tidak valid

@@ -3,7 +3,7 @@
 **Lokasi:** `Services/CampaignService.cs`
 
 ## Tujuan
-Modul ini mengelola seluruh aturan bisnis yang berkaitan dengan kampanye penggalangan dana. Layanan ini menjadi perantara antara Controller (yang meminta data) dan AppDbContext (yang menyimpan data).
+Modul ini mengelola seluruh aturan bisnis yang berkaitan dengan kampanye penggalangan dana. Layanan ini menjadi perantara antara Controller (yang meminta data) dan Repositori Generik (yang mengakses basis data).
 
 ## Cara Kerja
 Fungsi utama dari layanan ini adalah memproses data kampanye:
