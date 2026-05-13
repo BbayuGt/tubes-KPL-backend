@@ -3,6 +3,7 @@ using tubes_KPL_backend.Data;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
 using Xunit;
+using tubes_KPL_backend.Repositories;
 
 namespace UnitTesting_KPL.Services
 {
@@ -24,7 +25,7 @@ namespace UnitTesting_KPL.Services
             // Arrange = menyiapkan database dan service
             var dbContext = GetDbContext();
 
-            var service = new CampaignService(dbContext);
+            var service = new CampaignService(new GenericRepository<Campaign>(dbContext));
 
             var campaign = new Campaign
             {
@@ -71,7 +72,7 @@ namespace UnitTesting_KPL.Services
 
             await dbContext.SaveChangesAsync();
 
-            var service = new CampaignService(dbContext);
+            var service = new CampaignService(new GenericRepository<Campaign>(dbContext));
 
             // Act
             var result = await service.GetCampaignById(1);
@@ -102,7 +103,7 @@ namespace UnitTesting_KPL.Services
 
             await dbContext.SaveChangesAsync();
 
-            var service = new CampaignService(dbContext);
+            var service = new CampaignService(new GenericRepository<Campaign>(dbContext));
 
             // Act
             var result = await service.DeleteCampaign(1);
@@ -134,7 +135,7 @@ namespace UnitTesting_KPL.Services
 
             await dbContext.SaveChangesAsync();
 
-            var service = new CampaignService(dbContext);
+            var service = new CampaignService(new GenericRepository<Campaign>(dbContext));
 
             var duplicateCampaign = new Campaign
             {

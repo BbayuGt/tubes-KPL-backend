@@ -9,6 +9,7 @@ using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
 using Xunit;
+using tubes_KPL_backend.Repositories;
 
 namespace UnitTesting_KPL.Controllers
 {
@@ -42,7 +43,7 @@ namespace UnitTesting_KPL.Controllers
             var httpContextAccessor = new HttpContextAccessor();
 
             return new AuthService(
-                context,
+                new GenericRepository<User>(context),
                 configuration,
                 httpContextAccessor
             );
@@ -57,7 +58,6 @@ namespace UnitTesting_KPL.Controllers
             var authService = GetAuthService(dbContext);
 
             var controller = new AuthController(
-                dbContext,
                 authService
             );
 
@@ -96,7 +96,6 @@ namespace UnitTesting_KPL.Controllers
             var authService = GetAuthService(dbContext);
 
             var controller = new AuthController(
-                dbContext,
                 authService
             );
 
@@ -134,7 +133,6 @@ namespace UnitTesting_KPL.Controllers
             var authService = GetAuthService(dbContext);
 
             var controller = new AuthController(
-                dbContext,
                 authService
             );
 

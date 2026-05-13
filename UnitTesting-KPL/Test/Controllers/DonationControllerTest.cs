@@ -7,6 +7,7 @@ using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
 using Xunit;
+using tubes_KPL_backend.Repositories;
 
 namespace UnitTesting_KPL.Controllers
 {
@@ -45,7 +46,7 @@ namespace UnitTesting_KPL.Controllers
 
             await dbContext.SaveChangesAsync();
 
-            var service = new DonationService(dbContext);
+            var service = new DonationService(new GenericRepository<User>(dbContext), new GenericRepository<Donation>(dbContext), new GenericRepository<Campaign>(dbContext));
 
             var controller = new DonationController(service);
 
@@ -67,7 +68,7 @@ namespace UnitTesting_KPL.Controllers
             // Arrange
             var dbContext = GetDbContext();
 
-            var service = new DonationService(dbContext);
+            var service = new DonationService(new GenericRepository<User>(dbContext), new GenericRepository<Donation>(dbContext), new GenericRepository<Campaign>(dbContext));
 
             var controller = new DonationController(service);
 
@@ -107,7 +108,7 @@ namespace UnitTesting_KPL.Controllers
 
             await dbContext.SaveChangesAsync();
 
-            var service = new DonationService(dbContext);
+            var service = new DonationService(new GenericRepository<User>(dbContext), new GenericRepository<Donation>(dbContext), new GenericRepository<Campaign>(dbContext));
 
             var controller = new DonationController(service);
 
@@ -151,7 +152,7 @@ namespace UnitTesting_KPL.Controllers
 
             await dbContext.SaveChangesAsync();
 
-            var service = new DonationService(dbContext);
+            var service = new DonationService(new GenericRepository<User>(dbContext), new GenericRepository<Donation>(dbContext), new GenericRepository<Campaign>(dbContext));
 
             var controller = new DonationController(service);
 
@@ -177,7 +178,7 @@ namespace UnitTesting_KPL.Controllers
             // Arrange
             var dbContext = GetDbContext();
 
-            var service = new DonationService(dbContext);
+            var service = new DonationService(new GenericRepository<User>(dbContext), new GenericRepository<Donation>(dbContext), new GenericRepository<Campaign>(dbContext));
 
             var controller = new DonationController(service);
 
@@ -226,7 +227,7 @@ namespace UnitTesting_KPL.Controllers
 
             await dbContext.SaveChangesAsync();
 
-            var service = new DonationService(dbContext);
+            var service = new DonationService(new GenericRepository<User>(dbContext), new GenericRepository<Donation>(dbContext), new GenericRepository<Campaign>(dbContext));
 
             var controller = new DonationController(service);
 

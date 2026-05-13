@@ -5,6 +5,7 @@ using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
 using Xunit;
+using tubes_KPL_backend.Repositories;
 
 namespace UnitTesting_KPL.Services
 {
@@ -32,7 +33,7 @@ namespace UnitTesting_KPL.Services
             // Arrange = menyiapkan object testing
             var dbContext = GetDbContext();
 
-            var service = new DonationService(dbContext);
+            var service = new DonationService(new GenericRepository<User>(dbContext), new GenericRepository<Donation>(dbContext), new GenericRepository<Campaign>(dbContext));
 
             var request = new CreateDonationRequestDTO
             {
@@ -75,7 +76,7 @@ namespace UnitTesting_KPL.Services
 
             await dbContext.SaveChangesAsync();
 
-            var service = new DonationService(dbContext);
+            var service = new DonationService(new GenericRepository<User>(dbContext), new GenericRepository<Donation>(dbContext), new GenericRepository<Campaign>(dbContext));
 
             var request = new CreateDonationRequestDTO
             {
@@ -122,7 +123,7 @@ namespace UnitTesting_KPL.Services
 
             await dbContext.SaveChangesAsync();
 
-            var service = new DonationService(dbContext);
+            var service = new DonationService(new GenericRepository<User>(dbContext), new GenericRepository<Donation>(dbContext), new GenericRepository<Campaign>(dbContext));
 
             // Act
             var result = await service.GetDonationByIdAsync(1);
@@ -165,7 +166,7 @@ namespace UnitTesting_KPL.Services
 
             await dbContext.SaveChangesAsync();
 
-            var service = new DonationService(dbContext);
+            var service = new DonationService(new GenericRepository<User>(dbContext), new GenericRepository<Donation>(dbContext), new GenericRepository<Campaign>(dbContext));
 
             // Act
             var result = await service.DeleteDonationAsync(1);
