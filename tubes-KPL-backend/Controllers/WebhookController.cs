@@ -15,25 +15,36 @@ namespace tubes_KPL_backend.Controllers
         private readonly XenditSettings _xendit;
         private readonly IGenericRepository<Payment> _repository;
 
-        // Tambahkan AppDbContext di sini
+        // Table-Driven Dictionary Mapping
+        private readonly Dictionary<string, Func<Payment, JsonElement, Task>> _statusHandlers;
+
         public WebhookController(IOptions<XenditSettings> xendit, IGenericRepository<Payment> repository)
         {
             _xendit = xendit.Value;
             _repository = repository;
+
+            // Mapping status webhook ke handler
+            _statusHandlers = new Dictionary<string, Func<Payment, JsonElement, Task>>
+            {
+                { PaymentStatus.SUCCEEDED, HandleSuccessPayment },
+                { PaymentStatus.EXPIRED, HandleExpiredPayment },
+                { PaymentStatus.FAILED, HandleFailedPayment }
+            };
         }
 
         [HttpPost("xendit")]
         public async Task<IActionResult> HandleWebhook([FromBody] JsonElement payload)
         {
+            // Ambil callback token dari header
             var callbackToken = Request.Headers["x-callback-token"].ToString();
 
-            // Security check
+            // Security validation
             if (callbackToken != _xendit.CallbackToken)
             {
                 return StatusCode(403, "Invalid callback token");
             }
 
-            // Ambil data dari webhook
+            // Ambil data webhook
             var status = payload.GetProperty("status").GetString();
             var externalId = payload.GetProperty("external_id").GetString();
 
@@ -44,7 +55,8 @@ namespace tubes_KPL_backend.Controllers
 
             if (payment != null)
             {
-                if (status == PaymentStatus.SUCCEEDED)
+                // Table-Driven Processing
+                if (_statusHandlers.TryGetValue(status, out var handler))
                 {
                     payment.Status = PaymentStatus.SUCCEEDED;
                     // Pakai TryGetProperty untuk paid_at karena kadang formatnya bisa beda
@@ -70,11 +82,12 @@ namespace tubes_KPL_backend.Controllers
                 }
                 
                 // Save perubahan ke database
-                await _repository.SaveChangesAsync();
+                await _repository.SaveChangesAsync()
+ 
             }
             else
             {
-                Console.WriteLine($"Payment dengan ExternalId {externalId} tidak ditemukan di database.");
+                Console.WriteLine($"Payment dengan ExternalId {externalId} tidak ditemukan.");
             }
 
             return Ok(new
@@ -82,6 +95,46 @@ namespace tubes_KPL_backend.Controllers
                 success = true,
                 message = "Webhook processed"
             });
+        }
+
+        // HANDLER: SUCCESS PAYMENT
+        private async Task HandleSuccessPayment(Payment payment, JsonElement payload)
+        {
+            payment.Status = PaymentStatus.SUCCEEDED;
+
+            // Ambil paid_at jika ada
+            if (payload.TryGetProperty("paid_at", out var paidAtProp))
+            {
+                payment.PaidAt = paidAtProp.GetDateTimeOffset().UtcDateTime;
+            }
+            else
+            {
+                payment.PaidAt = DateTime.UtcNow;
+            }
+
+            Console.WriteLine($"Database updated: Pembayaran sukses untuk {payment.ExternalId}");
+
+            await Task.CompletedTask;
+        }
+
+        // HANDLER: EXPIRED PAYMENT
+        private async Task HandleExpiredPayment(Payment payment, JsonElement payload)
+        {
+            payment.Status = PaymentStatus.EXPIRED;
+
+            Console.WriteLine($"Database updated: Invoice expired untuk {payment.ExternalId}");
+
+            await Task.CompletedTask;
+        }
+
+        // HANDLER: FAILED PAYMENT
+        private async Task HandleFailedPayment(Payment payment, JsonElement payload)
+        {
+            payment.Status = PaymentStatus.FAILED;
+
+            Console.WriteLine($"Database updated: Pembayaran gagal untuk {payment.ExternalId}");
+
+            await Task.CompletedTask;
         }
     }
 }
