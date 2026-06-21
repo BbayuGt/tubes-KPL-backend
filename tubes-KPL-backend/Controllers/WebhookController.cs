@@ -15,6 +15,7 @@ namespace tubes_KPL_backend.Controllers
         private readonly XenditSettings _xendit;
         private readonly IGenericRepository<Payment> _repository;
         private readonly IGenericRepository<Campaign> _campaignRepository;
+        private readonly IGenericRepository<Donation> _donationRepository;
 
         // Table-Driven Dictionary Mapping
         private readonly Dictionary<string, Func<Payment, JsonElement, Task>> _statusHandlers;
@@ -22,11 +23,13 @@ namespace tubes_KPL_backend.Controllers
         public WebhookController(
             IOptions<XenditSettings> xendit, 
             IGenericRepository<Payment> repository,
-            IGenericRepository<Campaign> campaignRepository)
+            IGenericRepository<Campaign> campaignRepository,
+            IGenericRepository<Donation> donationRepository)
         {
             _xendit = xendit.Value;
             _repository = repository;
             _campaignRepository = campaignRepository;
+            _donationRepository = donationRepository;
 
             // Mapping status webhook ke handler
             _statusHandlers = new Dictionary<string, Func<Payment, JsonElement, Task>>
@@ -112,6 +115,22 @@ namespace tubes_KPL_backend.Controllers
                     campaign.CollectedAmount += payment.Amount;
                     _campaignRepository.Update(campaign);
                     Console.WriteLine($"Campaign {campaign.Id} updated with {payment.Amount}");
+
+                    var donorName = payment.Description.StartsWith("Donation by ") 
+                        ? payment.Description.Substring("Donation by ".Length) 
+                        : "Hamba Allah";
+
+                    var donation = new Donation
+                    {
+                        CampaignId = campaignId,
+                        DonorName = donorName,
+                        DonorEmail = payment.PayerEmail,
+                        Amount = payment.Amount,
+                        CreatedDate = DateTime.UtcNow
+                    };
+
+                    await _donationRepository.AddAsync(donation);
+                    Console.WriteLine($"Donation record created for {donorName}");
                 }
             }
 
