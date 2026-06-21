@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using tubes_KPL_backend.Data;
@@ -11,9 +12,11 @@ using tubes_KPL_backend.Data;
 namespace tubes_KPL_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260513080402_fix-key")]
+    partial class fixkey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,8 +93,11 @@ namespace tubes_KPL_backend.Migrations
 
             modelBuilder.Entity("tubes_KPL_backend.Models.Payment", b =>
                 {
-                    b.Property<string>("ExternalId")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
@@ -106,8 +112,9 @@ namespace tubes_KPL_backend.Migrations
                     b.Property<DateTime?>("ExpiryDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
+                    b.Property<string>("ExternalId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("InvoiceUrl")
                         .IsRequired()
@@ -124,7 +131,7 @@ namespace tubes_KPL_backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("ExternalId");
+                    b.HasKey("Id");
 
                     b.ToTable("Payments");
                 });

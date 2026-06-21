@@ -3,4 +3,5 @@
     <File Path="compose.yaml" />
   </Folder>
   <Project Path="tubes-KPL-backend/tubes-KPL-backend.csproj" />
+  <Project Path="UnitTesting-KPL/UnitTesting-KPL.csproj" Id="5e971c9c-a8cf-4fd6-ab9f-7dd4fda178d4" />
 </Solution>
