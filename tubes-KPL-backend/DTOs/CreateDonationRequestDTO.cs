@@ -5,7 +5,8 @@
 
         public int CampaignId { get; set; }
         public decimal Amount { get; set; }
-        public int UserId { get; set; }
-        
+        public string DonorName { get; set; }
+        public string DonorEmail { get; set; }
+
     }
 }

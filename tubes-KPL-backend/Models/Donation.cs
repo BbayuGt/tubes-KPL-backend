@@ -3,28 +3,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace tubes_KPL_backend.Models
 {
-    [PrimaryKey(nameof(Id))] 
+    [PrimaryKey(nameof(Id))]
     public class Donation
     {
-            public int Id { get; set; }
+        public int Id { get; set; }
 
-            // User (donatur) yang melakukan donasi.
-            public int UserId { get; set; }
+        // Campaign tujuan donasi
+        public int CampaignId { get; set; }
 
-            // Campaign tujuan dari donasi.
-            public int CampaignId { get; set; }
+        // Nama donatur (opsional login)
+        public string DonorName { get; set; }
 
-            // Timestamp saat donasi tercatat di sistem.
-            public DateTime CreatedDate { get; set; }
+        // Email donatur
+        public string DonorEmail { get; set; }
 
-            // Nominal uang yang didonasikan.
-            public decimal Amount { get; set; }
+        // Nominal donasi
+        public decimal Amount { get; set; }
 
-            [ForeignKey(nameof(UserId))]
-            public User? User { get; set; }
+        // Waktu donasi
+        public DateTime CreatedDate { get; set; }
 
-            // Relasi ke campaign agar histori donasi bisa ditelusuri per campaign.
-            [ForeignKey(nameof(CampaignId))]
-            public Campaign? Campaign { get; set; }
-        }
+        // Relasi ke Campaign
+        [ForeignKey(nameof(CampaignId))]
+        public Campaign? Campaign { get; set; }
+    }
 }

@@ -14,14 +14,19 @@ namespace tubes_KPL_backend.Controllers
     {
         private readonly XenditSettings _xendit;
         private readonly IGenericRepository<Payment> _repository;
+        private readonly IGenericRepository<Campaign> _campaignRepository;
 
         // Table-Driven Dictionary Mapping
         private readonly Dictionary<string, Func<Payment, JsonElement, Task>> _statusHandlers;
 
-        public WebhookController(IOptions<XenditSettings> xendit, IGenericRepository<Payment> repository)
+        public WebhookController(
+            IOptions<XenditSettings> xendit, 
+            IGenericRepository<Payment> repository,
+            IGenericRepository<Campaign> campaignRepository)
         {
             _xendit = xendit.Value;
             _repository = repository;
+            _campaignRepository = campaignRepository;
 
             // Mapping status webhook ke handler
             _statusHandlers = new Dictionary<string, Func<Payment, JsonElement, Task>>
@@ -97,6 +102,19 @@ namespace tubes_KPL_backend.Controllers
 
             Console.WriteLine($"Database updated: Pembayaran sukses untuk {payment.ExternalId}");
             _repository.Update(payment);
+
+            var parts = payment.ExternalId.Split('-');
+            if (parts.Length >= 3 && int.TryParse(parts[1], out int campaignId) && campaignId > 0)
+            {
+                var campaign = await _campaignRepository.GetByExpression(c => c.Id == campaignId);
+                if (campaign != null)
+                {
+                    campaign.CollectedAmount += payment.Amount;
+                    _campaignRepository.Update(campaign);
+                    Console.WriteLine($"Campaign {campaign.Id} updated with {payment.Amount}");
+                }
+            }
+
             await Task.CompletedTask;
         }
 

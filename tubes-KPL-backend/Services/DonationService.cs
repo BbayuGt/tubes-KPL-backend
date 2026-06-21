@@ -1,5 +1,3 @@
-﻿using Microsoft.EntityFrameworkCore;
-using tubes_KPL_backend.Data;
 using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Repositories;
@@ -8,62 +6,66 @@ namespace tubes_KPL_backend.Services
 {
     public class DonationService
     {
-        private readonly IGenericRepository<User> _UserRepository;
         private readonly IGenericRepository<Donation> _DonationRepository;
-        private readonly IGenericRepository<Campaign>  _CampaignRepository;
-        public DonationService(IGenericRepository<User> urepository, IGenericRepository<Donation> donationRepository,  IGenericRepository<Campaign> campaignRepository)
+        private readonly IGenericRepository<Campaign> _CampaignRepository;
+
+    public DonationService(
+        IGenericRepository<Donation> donationRepository,
+        IGenericRepository<Campaign> campaignRepository)
         {
-            _UserRepository = urepository;
             _DonationRepository = donationRepository;
             _CampaignRepository = campaignRepository;
         }
+
         public async Task<Donation?> GetDonationByIdAsync(int id)
         {
-            var donations = await _DonationRepository.GetByExpression(u => u.Id == id);
-            return donations;
+            return await _DonationRepository.GetByExpression(d => d.Id == id);
         }
+
         public async Task<IEnumerable<Donation>> GetAllDonationsAsync()
         {
-            var donations = await _DonationRepository.GetAllAsync();
-            return donations;
+            return await _DonationRepository.GetAllAsync();
         }
 
         public async Task<CreateDonationResponseDTO> CreateDonationAsync(CreateDonationRequestDTO request)
         {
-            // Validasi nilai donasi wajib > 0 agar tidak ada transaksi nominal nol/negatif.
+            // Validasi nominal
             if (request.Amount <= 0)
             {
                 throw new ArgumentException("Nominal donasi harus lebih dari 0.");
             }
 
-            // Pastikan user (donatur) valid.
-            var userExists = await _UserRepository.ExistsAsync(u => u.Id == request.UserId);
-            if (!userExists)
+            // Validasi nama
+            if (string.IsNullOrWhiteSpace(request.DonorName))
             {
-                throw new KeyNotFoundException("User tidak ditemukan.");
+                throw new ArgumentException("Nama donatur wajib diisi.");
             }
 
-            // Ambil campaign tujuan yang akan ditambahkan total dananya.
+            // Validasi email
+            if (string.IsNullOrWhiteSpace(request.DonorEmail))
+            {
+                throw new ArgumentException("Email donatur wajib diisi.");
+            }
+
+            // Cari campaign
             var campaign = await _CampaignRepository.GetByExpression(c => c.Id == request.CampaignId);
+
             if (campaign == null)
             {
                 throw new KeyNotFoundException("Campaign tidak ditemukan.");
             }
 
-            // Atomic transaction: catat donasi + update total campaign harus sukses bersama.
+            // Buat data donasi
             var donation = new Donation
             {
-                UserId = request.UserId,
                 CampaignId = request.CampaignId,
+                DonorName = request.DonorName,
+                DonorEmail = request.DonorEmail,
                 Amount = request.Amount,
                 CreatedDate = DateTime.UtcNow
             };
 
-            _DonationRepository.AddAsync(donation);
-
-            // Update akumulasi dana campaign secara sistematis setelah donasi valid.
-            campaign.CollectedAmount += request.Amount;
-
+            await _DonationRepository.AddAsync(donation);
             await _DonationRepository.SaveChangesAsync();
 
             return new CreateDonationResponseDTO
@@ -79,20 +81,23 @@ namespace tubes_KPL_backend.Services
         public async Task<bool> DeleteDonationAsync(int id)
         {
             var donation = await _DonationRepository.GetByExpression(d => d.Id == id);
+
             if (donation == null)
             {
                 return false;
             }
 
             var campaign = await _CampaignRepository.GetByExpression(c => c.Id == donation.CampaignId);
+
             if (campaign == null)
             {
                 throw new KeyNotFoundException("Campaign tidak ditemukan untuk donasi ini.");
             }
 
-            // Atomic transaction: hapus donasi + koreksi total campaign harus sinkron.
             _DonationRepository.Delete(donation);
+
             campaign.CollectedAmount -= donation.Amount;
+
             if (campaign.CollectedAmount < 0)
             {
                 campaign.CollectedAmount = 0;
