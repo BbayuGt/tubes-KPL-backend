@@ -85,6 +85,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<DonationService>();
 builder.Services.AddScoped<CampaignService>();
+builder.Services.AddScoped<UpdatePostService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); // repository
 var app = builder.Build();
 

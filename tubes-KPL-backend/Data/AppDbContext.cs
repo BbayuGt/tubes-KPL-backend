@@ -11,4 +11,5 @@ public class AppDbContext : DbContext
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Campaign> Campaigns { get; set; }
     public DbSet<Donation> Donations { get; set; }
+    public DbSet<UpdatePost> UpdatePosts { get; set; }
 }
