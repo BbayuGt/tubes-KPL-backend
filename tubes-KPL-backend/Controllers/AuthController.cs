@@ -84,7 +84,7 @@ public class AuthController : ControllerBase
             return Results.Ok(new
             {
                 Message = "Successfully logged in!",
-                Token = jwt
+                Token = jwt.Value
             });
         }
         catch (Exception e)
