@@ -17,12 +17,11 @@ builder.Services.Configure<tubes_KPL_backend.Models.XenditSettings>(
 builder.Services.AddHttpClient();
 
 // CORS
-var frontendUrl = builder.Configuration["FrontendUrl"] ?? "http://localhost:5001";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins(frontendUrl.Split(','))
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
