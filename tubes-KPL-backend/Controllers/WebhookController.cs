@@ -33,7 +33,7 @@ namespace tubes_KPL_backend.Controllers
         }
 
         [HttpPost("xendit")]
-        public async Task<IActionResult> HandleWebhook([FromBody] JsonElement payload)
+        public async Task<IResult> HandleWebhook([FromBody] JsonElement payload)
         {
             // Ambil callback token dari header
             var callbackToken = Request.Headers["x-callback-token"].ToString();
@@ -41,7 +41,7 @@ namespace tubes_KPL_backend.Controllers
             // Security validation
             if (callbackToken != _xendit.CallbackToken)
             {
-                return StatusCode(403, "Invalid callback token");
+                return Results.Content("Invalid callback token", statusCode: 403);
             }
 
             // Ambil data webhook
@@ -60,7 +60,7 @@ namespace tubes_KPL_backend.Controllers
                 {
                     if (status == null)
                     {
-                        return StatusCode(403, "Invalid status");
+                        return Results.Content("Invalid status", statusCode: 403);
                     }
                     await _statusHandlers[status](payment, payload);
                 }
@@ -73,7 +73,7 @@ namespace tubes_KPL_backend.Controllers
                 Console.WriteLine($"Payment dengan ExternalId {externalId} tidak ditemukan.");
             }
 
-            return Ok(new
+            return Results.Ok(new
             {
                 success = true,
                 message = "Webhook processed"
