@@ -50,6 +50,11 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IResult> Register(RegisterDTO request)
     {
+        if (string.IsNullOrWhiteSpace(request.Email) || !new EmailAddressAttribute().IsValid(request.Email))
+        {
+            return Results.BadRequest("Invalid email format.");
+        }
+
         try
         {
             await _authService.RegisterUser(request.Name, request.Email, request.Password);
@@ -67,6 +72,11 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IResult> Login(LoginDTO request)
     {
+        if (string.IsNullOrWhiteSpace(request.Email) || !new EmailAddressAttribute().IsValid(request.Email))
+        {
+            return Results.BadRequest("Invalid email format.");
+        }
+
         try
         {
             ActionResult<string> jwt = await _authService.Login(request.Email, request.Password);
