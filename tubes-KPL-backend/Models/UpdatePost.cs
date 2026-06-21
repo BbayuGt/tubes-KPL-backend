@@ -20,6 +20,6 @@ namespace tubes_KPL_backend.Models
         [Required]
         public string Description { get; set; } = string.Empty;
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace tubes_KPL_backend.DTOs
+namespace tubes_KPL_backend.DTOs
 {
     public class CreateDonationResponseDTO
     {
@@ -11,6 +11,6 @@
         public int CampaignId { get; set; }
         public decimal DonationAmount { get; set; }
         public decimal UpdatedCampaignTotal { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }
 }
