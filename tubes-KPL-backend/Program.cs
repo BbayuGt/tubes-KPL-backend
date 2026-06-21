@@ -8,6 +8,7 @@ using tubes_KPL_backend.Repositories;
 using tubes_KPL_backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 //Xendit
 builder.Services.Configure<tubes_KPL_backend.Models.XenditSettings>(
