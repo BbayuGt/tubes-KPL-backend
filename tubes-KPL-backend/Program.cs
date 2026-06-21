@@ -8,6 +8,7 @@ using tubes_KPL_backend.Repositories;
 using tubes_KPL_backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 //Xendit
 builder.Services.Configure<tubes_KPL_backend.Models.XenditSettings>(
@@ -17,12 +18,11 @@ builder.Services.Configure<tubes_KPL_backend.Models.XenditSettings>(
 builder.Services.AddHttpClient();
 
 // CORS
-var frontendUrl = builder.Configuration["FrontendUrl"] ?? "http://localhost:5001";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins(frontendUrl.Split(','))
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -85,6 +85,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<DonationService>();
 builder.Services.AddScoped<CampaignService>();
+builder.Services.AddScoped<UpdatePostService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); // repository
 var app = builder.Build();
 
