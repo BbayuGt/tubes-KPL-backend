@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace tubes_KPL_backend.Controllers;
 
@@ -22,7 +23,7 @@ public class AuthController : ControllerBase
     [Authorize(AuthenticationSchemes = "Bearer")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponseDTO))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetMe()
+    public async Task<IResult> GetMe()
     {
         try
         {
@@ -36,41 +37,41 @@ public class AuthController : ControllerBase
                 Email = user.Email
             };
             
-            return Ok(new
+            return Results.Ok(new
             {
                 User = response
             });
         } catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return Results.BadRequest(e.Message);
         }
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterDTO request)
+    public async Task<IResult> Register(RegisterDTO request)
     {
         try
         {
             await _authService.RegisterUser(request.Name, request.Email, request.Password);
-            return Ok(new
+            return Results.Ok(new
             {
                 Message = "User has been registered successfully!"
             });
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return Results.BadRequest(e.Message);
         }
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginDTO request)
+    public async Task<IResult> Login(LoginDTO request)
     {
         try
         {
             ActionResult<string> jwt = await _authService.Login(request.Email, request.Password);
             
-            return Ok(new
+            return Results.Ok(new
             {
                 Message = "Successfully logged in!",
                 Token = jwt
@@ -78,7 +79,7 @@ public class AuthController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return Results.BadRequest(e.Message);
         }
     }
 }
