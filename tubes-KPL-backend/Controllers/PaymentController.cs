@@ -33,16 +33,16 @@ namespace tubes_KPL_backend.Controllers
         }
 
         [HttpPost("create-invoice")]
-        public async Task<IActionResult> CreateInvoice([FromBody] CreateInvoiceRequest request)
+        public async Task<IResult> CreateInvoice([FromBody] CreateInvoiceRequest request)
         {
             if (request.Amount <= 0)
             {
-                return BadRequest(new { message = "Amount must be greater than 0." });
+                return Results.BadRequest(new { message = "Amount must be greater than 0." });
             }
 
             if (await _repository.ExistsAsync(c => c.ExternalId == request.ExternalId))
             {
-                return BadRequest("Duplikat external");
+                return Results.BadRequest("Duplikat external");
             }
 
             var client = _httpClientFactory.CreateClient();
@@ -86,7 +86,7 @@ namespace tubes_KPL_backend.Controllers
                     response.StatusCode,
                     result
                 );
-                return StatusCode((int)response.StatusCode, result);
+                return Results.Content(result, "application/json", statusCode: (int)response.StatusCode);
             }
             var invoice = JsonSerializer.Deserialize<JsonElement>(result);
             var invoiceUrl = invoice.GetProperty("invoice_url").GetString()!;
@@ -108,18 +108,18 @@ namespace tubes_KPL_backend.Controllers
             await _repository.AddAsync(payment);
             await _repository.SaveChangesAsync();
 
-            return Content(result, "application/json");
+            return Results.Content(result, "application/json");
         }
 
         [HttpGet("status/{externalId}")]
-        public async Task<IActionResult> GetStatus(string externalId)
+        public async Task<IResult> GetStatus(string externalId)
         {
             var payment = await _repository
                 .GetByExpression(p => p.ExternalId == externalId);
 
             if (payment == null)
             {
-                return NotFound(new { message = "Payment not found." });
+                return Results.NotFound(new { message = "Payment not found." });
             }
 
             var dto = new PaymentStatusDTO
@@ -135,7 +135,7 @@ namespace tubes_KPL_backend.Controllers
                 ExpiryDate = payment.ExpiryDate
             };
 
-            return Ok(dto);
+            return Results.Ok(dto);
         }
     }
 
