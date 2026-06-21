@@ -29,6 +29,7 @@ namespace tubes_KPL_backend.Services
             {
                 return null;
             }
+            updatePost.CreatedAt = DateTime.UtcNow;
             await _repository.AddAsync(updatePost);
             await _repository.SaveChangesAsync();
             return updatePost;

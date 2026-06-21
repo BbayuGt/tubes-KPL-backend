@@ -1,4 +1,4 @@
-﻿using tubes_KPL_backend.Data;
+using tubes_KPL_backend.Data;
 using tubes_KPL_backend.Models;
 using Microsoft.EntityFrameworkCore;
 using tubes_KPL_backend.Repositories;
@@ -35,6 +35,7 @@ namespace tubes_KPL_backend.Services
             {
                 return null;
             }
+            campaign.CreatedAt = DateTime.UtcNow;
             await _repository.AddAsync(campaign);
             await _repository.SaveChangesAsync();
             return campaign;
