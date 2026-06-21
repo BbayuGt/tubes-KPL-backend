@@ -1,4 +1,4 @@
-﻿// Digunakan untuk fitur authorization/authentication
+// Digunakan untuk fitur authorization/authentication
 using Microsoft.AspNetCore.Authorization;
 
 namespace tubes_KPL_backend.Controllers
@@ -30,17 +30,17 @@ namespace tubes_KPL_backend.Controllers
        
         // GET ALL CAMPAIGN
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IResult> GetAll()
         {
         
             var campaigns = await _campaignService.GetAllCampaigns();
-            return Ok(campaigns);
+            return Results.Ok(campaigns);
         }
 
         // GET CAMPAIGN BY ID
         // Endpoint: GET api/campaign/1
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IResult> GetById(int id)
         {
 
             var campaign = await _campaignService.GetCampaignById(id);
@@ -49,10 +49,10 @@ namespace tubes_KPL_backend.Controllers
             if (campaign == null)
 
                 // Mengembalikan response 404
-                return NotFound(new { message = "Campaign tidak ditemukan" });
+                return Results.NotFound(new { message = "Campaign tidak ditemukan" });
 
         
-            return Ok(campaign);
+            return Results.Ok(campaign);
         }
 
  
@@ -60,7 +60,7 @@ namespace tubes_KPL_backend.Controllers
 
         // Hanya Admin yang bisa membuat campaign
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
-        public async Task<ActionResult<Campaign>> Create(Campaign campaign)
+        public async Task<IResult> Create(Campaign campaign)
         {
             // Menambahkan campaign baru melalui service
             var newCampaign = await _campaignService.CreateCampaign(campaign);
@@ -69,10 +69,10 @@ namespace tubes_KPL_backend.Controllers
             if (newCampaign == null)
 
                 // Mengembalikan null
-                return null;
+                return Results.BadRequest(new { message = "Gagal membuat campaign" });
 
             // Mengembalikan data campaign yang berhasil dibuat
-            return campaign;
+            return Results.Ok(campaign);
         }
 
         // Endpoint: PUT api/campaign/1
@@ -80,7 +80,7 @@ namespace tubes_KPL_backend.Controllers
 
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
-        public async Task<IActionResult> Update(int id, Campaign campaign)
+        public async Task<IResult> Update(int id, Campaign campaign)
         {
            
             var result = await _campaignService.UpdateCampaign(id, campaign);
@@ -88,10 +88,10 @@ namespace tubes_KPL_backend.Controllers
             if (!result)
 
                 
-                return NotFound(new { message = "Campaign tidak ditemukan" });
+                return Results.NotFound(new { message = "Campaign tidak ditemukan" });
 
             // Mengembalikan response sukses
-            return Ok(new { message = "Campaign berhasil diupdate" });
+            return Results.Ok(new { message = "Campaign berhasil diupdate" });
         }
 
      
@@ -101,7 +101,7 @@ namespace tubes_KPL_backend.Controllers
 
     
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IResult> Delete(int id)
         {
           
             var result = await _campaignService.DeleteCampaign(id);
@@ -110,10 +110,10 @@ namespace tubes_KPL_backend.Controllers
             if (!result)
 
              
-                return NotFound(new { message = "Campaign tidak ditemukan" });
+                return Results.NotFound(new { message = "Campaign tidak ditemukan" });
 
          
-            return Ok(new { message = "Campaign berhasil dihapus" });
+            return Results.Ok(new { message = "Campaign berhasil dihapus" });
         }
     }
 }
