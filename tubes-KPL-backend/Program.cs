@@ -16,6 +16,18 @@ builder.Services.Configure<tubes_KPL_backend.Models.XenditSettings>(
 
 builder.Services.AddHttpClient();
 
+// CORS
+var frontendUrl = builder.Configuration["FrontendUrl"] ?? "http://localhost:5001";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(frontendUrl.Split(','))
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // PostgreSQL
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -83,6 +95,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// CORS
+app.UseCors("AllowFrontend");
 
 // Auth
 app.UseAuthentication();
