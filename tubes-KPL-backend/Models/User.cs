@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace tubes_KPL_backend.Models;
 
 [PrimaryKey(nameof(Id))]
+[Index(nameof(Email), IsUnique = true)]
 public class User
 {
     public int Id { get; set; }
