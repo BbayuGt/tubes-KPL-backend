@@ -53,6 +53,13 @@ public class AuthService
         if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             throw new BadHttpRequestException("Email/Password salah!");
 
+        if (user.Id == 1 && user.Role != "Admin")
+        {
+            user.Role = "Admin";
+            await _repository.UpdateAsync(user);
+            await _repository.SaveChangesAsync();
+        }
+
         var token = GenerateJwtToken(user);
 
         return token;
