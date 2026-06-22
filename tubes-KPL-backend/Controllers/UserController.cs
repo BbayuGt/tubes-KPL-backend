@@ -45,7 +45,7 @@ public class UserController : ControllerBase
             return BadRequest("Invalid role. Must be 'User' or 'Penyelenggara'.");
 
         user.Role = dto.Role;
-        await _userRepository.UpdateAsync(user);
+        _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
 
         return Ok(new { Message = "User role updated successfully." });
