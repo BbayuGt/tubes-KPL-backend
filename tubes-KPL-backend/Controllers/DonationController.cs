@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using tubes_KPL_backend.DTOs;
 using tubes_KPL_backend.Models;
 using tubes_KPL_backend.Services;
@@ -28,6 +29,7 @@ public class DonationController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Penyelenggara,penyelenggara")]
     public async Task<IResult> GetAllDonations()
     {
         var donations = await _donationService.GetAllDonationsAsync();
@@ -56,6 +58,7 @@ public class DonationController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public async Task<IResult> DeleteDonation(int id)
     {
         try

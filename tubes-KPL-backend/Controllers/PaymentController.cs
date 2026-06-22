@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text;
@@ -139,6 +140,7 @@ namespace tubes_KPL_backend.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Penyelenggara,penyelenggara")]
         public async Task<IResult> GetAllPayments()
         {
             var payments = await _repository.GetAllAsync();
