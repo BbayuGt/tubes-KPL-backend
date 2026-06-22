@@ -57,9 +57,8 @@ namespace tubes_KPL_backend.Controllers
 
  
         [HttpPost]
-
-        // Hanya Admin yang bisa membuat campaign
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        // Hanya Admin & Penyelenggara yang bisa membuat campaign
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Penyelenggara")]
         public async Task<IResult> Create(Campaign campaign)
         {
             // Menambahkan campaign baru melalui service

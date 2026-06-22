@@ -34,7 +34,7 @@ namespace tubes_KPL_backend.Controllers
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,penyelenggara")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Penyelenggara")]
         public async Task<IResult> Create(UpdatePost updatePost)
         {
             var newPost = await _updatePostService.CreateUpdatePost(updatePost);
@@ -45,7 +45,7 @@ namespace tubes_KPL_backend.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,penyelenggara")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Penyelenggara")]
         public async Task<IResult> Update(int id, UpdatePost updatePost)
         {
             var result = await _updatePostService.UpdateUpdatePost(id, updatePost);
@@ -56,7 +56,7 @@ namespace tubes_KPL_backend.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,penyelenggara")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Penyelenggara")]
         public async Task<IResult> Delete(int id)
         {
             var result = await _updatePostService.DeleteUpdatePost(id);
