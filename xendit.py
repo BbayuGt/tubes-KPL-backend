@@ -7,7 +7,7 @@ if len(arg) == 3:
     external_id = arg[1]
     status = arg[2]
 
-    url = "http://localhost:8080/api/webhook/xendit"
+    url = "https://tubes-kpl-backend.kamo.my.id/api/webhook/xendit"
     callback_token = "webhook_xendit_donasi"
 
     payload = {

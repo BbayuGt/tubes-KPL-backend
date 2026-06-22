@@ -137,6 +137,13 @@ namespace tubes_KPL_backend.Controllers
 
             return Results.Ok(dto);
         }
+
+        [HttpGet]
+        public async Task<IResult> GetAllPayments()
+        {
+            var payments = await _repository.GetAllAsync();
+            return Results.Ok(payments);
+        }
     }
 
     public class CreateInvoiceRequest
